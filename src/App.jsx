@@ -10,6 +10,7 @@ import Unauthorized from './components/Unauthorized';
 import Lounge from './components/Lounge';
 import LinkPage from './components/LinkPage';
 import RequireAuth from './components/RequireAuth';
+import PersistLogin from './components/PersistLogin';
 
 function App() {
   return (
@@ -22,10 +23,18 @@ function App() {
         <Route path="unauthorized" element={<Unauthorized />} />
 
         {/* we want to protect these routes */}
-        <Route element={<RequireAuth />}>
+        <Route element={<RequireAuth allowedRoles={["ROLE_ADMIN","ROLE_EDITOR"]}/>}>
           <Route path="/" element={<Home />} />
+        </Route>
+        <Route element={<RequireAuth allowedRoles={["ROLE_EDITOR","ROLE_ADMIN"]}/>}>
           <Route path="editor" element={<Editor />} />
+        </Route>
+        
+        <Route element={<RequireAuth allowedRoles={["ROLE_ADMIN"]}/>}>
           <Route path="admin" element={<Admin />} />
+        </Route>
+
+        <Route element={<RequireAuth allowedRoles={["ROLE_ADMIN","ROLE_EDITOR"]}/>}>
           <Route path="lounge" element={<Lounge />} />
         </Route>
 
